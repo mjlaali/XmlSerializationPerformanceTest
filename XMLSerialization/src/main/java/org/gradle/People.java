@@ -1,5 +1,6 @@
 package org.gradle;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +8,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.sun.xml.internal.txw2.annotation.XmlElement;
 
+@SuppressWarnings("serial")
 @XmlRootElement
-public class People {
+public class People implements Serializable{
 
 	List<Person> persons = new ArrayList<Person>();
 

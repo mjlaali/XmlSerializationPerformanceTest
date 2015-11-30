@@ -28,7 +28,8 @@ public class PeopleXMLReader {
 	}
 
 	private Person getPerson(Element e) {
-		double age = Double.parseDouble(e.getAttributeValue("age"));
+		double age = 0;
+		age = Double.parseDouble(e.getAttributeValue("age"));
 		String name = e.getText();
 		return new Person(name, age);
 	}

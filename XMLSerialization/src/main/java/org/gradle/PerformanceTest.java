@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Calendar;
 
@@ -19,7 +21,7 @@ import org.jdom2.JDOMException;
 
 public class PerformanceTest {
 
-	public static void main(String[] args) throws JAXBException, IOException, JDOMException {
+	public static void main(String[] args) throws JAXBException, IOException, JDOMException, ClassNotFoundException {
 		System.out.println("PerformanceTest.main()");
 		File outputFile = new File("out.xml");
 		JAXBContext context = JAXBContext.newInstance(People.class);
@@ -68,5 +70,21 @@ public class PerformanceTest {
 		endTime = Calendar.getInstance().getTimeInMillis();
 		
 		System.out.printf("Manual -> Unmarshaled's person size: %d, unmarshaling time: %d\n", people2.getPersons().size(), endTime - startTime);
+		
+		
+		ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(outputFile)));
+		startTime = Calendar.getInstance().getTimeInMillis();
+		output.writeObject(people);
+		endTime = Calendar.getInstance().getTimeInMillis();
+		output.close();
+		System.out.printf("Java -> File size: %d, marshaling time: %d\n", outputFile.length(), endTime - startTime);
+		
+		ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(new FileInputStream(outputFile)));
+		startTime = Calendar.getInstance().getTimeInMillis();
+		Object obj = input.readObject();
+		endTime = Calendar.getInstance().getTimeInMillis();
+		input.close();
+		System.out.printf("Java -> Unmarshaled's person size: %d, unmarshaling time: %d\n", ((People)obj).getPersons().size(), endTime - startTime);
+		
 	}
 }

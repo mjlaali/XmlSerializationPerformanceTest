@@ -1,8 +1,11 @@
 package org.gradle;
 
+import java.io.Serializable;
+
 import com.sun.xml.internal.txw2.annotation.XmlElement;
 
-public class Person {
+@SuppressWarnings("serial")
+public class Person implements Serializable{
     private String name;
     private double age;
 
